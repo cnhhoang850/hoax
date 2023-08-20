@@ -112,10 +112,8 @@ func (s *Scanner) ScanToken() {
 			for isAlphaNumeric(s.Peek()) {
 				s.Advance()
 			}
-
 			text := s.Source[s.Start:s.Pointer]
 			tokType, keyword := checkKeyword(text)
-			fmt.Println(">>>>>>>>", text, tokType)
 			if keyword {
 				s.Tokens = append(s.Tokens, token.NewToken(tokType, text, "", s.Line))
 			} else {
@@ -123,6 +121,28 @@ func (s *Scanner) ScanToken() {
 			}
 
 		} else if isDigit(phoneme) {
+			//integer or float
+			isFloat := false
+
+			for isDigit(s.Peek()) {
+				s.Advance()
+			}
+
+			// look for decimal
+			if s.Peek() == "." {
+				isFloat = true
+				for isDigit(s.Peek()) {
+					s.Advance()
+				}
+			}
+
+			number := s.Source[s.Start:s.Pointer]
+			if isFloat {
+				s.Tokens = append(s.Tokens, token.NewToken(token.FLOAT, number, "", s.Line))
+			} else {
+				s.Tokens = append(s.Tokens, token.NewToken(token.NUMBER, number, "", s.Line))
+			}
+
 		} else {
 			fmt.Println("Unrecognized character", phoneme)
 		}

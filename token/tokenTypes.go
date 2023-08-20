@@ -31,6 +31,7 @@ const (
 	IDENTIFIER
 	STRING
 	NUMBER
+	FLOAT
 
 	// Keywords.
 	AND
