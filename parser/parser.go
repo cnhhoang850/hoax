@@ -6,21 +6,30 @@ import (
 )
 
 type Expression struct {
+}
+
+type Binary struct {
+	Expression
 	Left     *Expression
 	Right    *Expression
 	Operator token.Token
 }
 
-type Binary struct {
-	Expression
-}
-
 type Unary struct {
 	Expression
+	Operator token.Token
+	Right    *Expression
 }
 
 type Literal struct {
 	Expression
+	Value interface{}
+}
+
+type Grouping struct {
+	Left  token.Token
+	Body  *Expression
+	Right token.Token
 }
 
 type Parser struct {
