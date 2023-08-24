@@ -1,4 +1,4 @@
-package metaAST
+package generateAST
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // metaAST generates Go code for creating an AST (Abstract Syntax Tree) based on given types.
-func metaAST() {
+/*func generateAST() {
 	// Check for command-line arguments
 	if len(os.Args) < 4 {
 		fmt.Println("Usage: go run main.go <output_path> <base_name> <type1> <type2> ...")
@@ -20,10 +20,10 @@ func metaAST() {
 	types := os.Args[3:]
 
 	defineAST(outputPath, baseName, types)
-}
+}*/
 
 // defineAST generates code for the base class and its subclasses based on provided types.
-func defineAST(path string, baseName string, types []string) {
+func GenerateAST(path string, baseName string, types []string) {
 	// Open the file for writing, creating if it doesn't exist
 	file, err := os.Create(path + "/" + baseName + ".go")
 	if err != nil {
@@ -39,7 +39,9 @@ func defineAST(path string, baseName string, types []string) {
 
 	// Iterate through provided types and generate code for each subclass
 	for _, typeStr := range types {
+		fmt.Println("typeStr", typeStr)
 		parts := strings.Split(typeStr, ":")
+		fmt.Println("parts", parts[1])
 		if len(parts) != 2 {
 			fmt.Println("Invalid type string", typeStr)
 			return
@@ -48,10 +50,12 @@ func defineAST(path string, baseName string, types []string) {
 		className := strings.TrimSpace(parts[0])
 		fields := strings.TrimSpace(parts[1])
 
-		defineSubClass(baseName, className, fields)
+		basenameContent += "\n" + defineSubClass(baseName, className, fields)
 	}
 
-	_, err = fmt.Fprintf(file, basenameContent, baseName)
+	fmt.Println(basenameContent)
+	_, err = file.WriteString(basenameContent)
+
 	if err != nil {
 		fmt.Println("Error writing to file", err)
 		return
@@ -65,7 +69,7 @@ func defineSubClass(structName string, className string, fields string) string {
 	// Add fields into struct
 	structString := fmt.Sprintf(
 		"type %s struct {\n%s\n}\n\n",
-		structName,
+		className,
 		strings.Join(fieldSplits, "\n"),
 	)
 

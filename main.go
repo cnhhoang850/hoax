@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"hoax/generateAST"
 	"hoax/scanner"
 	"hoax/token"
 	"io"
@@ -32,6 +33,14 @@ func main() {
 
 	scanner.ScanTokens()
 	fmt.Println(scanner.Tokens)
+
+	//Test generateAST
+	generateAST.GenerateAST("./", "Expr", []string{
+		"Binary   : left Expr, operator Token, right Expr",
+		"Grouping : expression Expr",
+		"Literal  : value interface{}", // interface{} is a placeholder for any type
+		"Unary    : operator Token, right Expr",
+	})
 }
 
 func runFile(filePath string) {
