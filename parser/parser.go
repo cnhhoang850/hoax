@@ -5,14 +5,21 @@ import (
 	"hoax/token"
 )
 
-type Expression struct {
+// We declare interface to wrap function signatures around the concrete structs
+type ExpressionInterface interface {
+	Accept(visitor VisitorInterface)
 }
 
+type Expression struct{}
 type Binary struct {
 	Expression
 	Left     *Expression
 	Right    *Expression
 	Operator token.Token
+}
+
+func (b *Binary) Accept(visitor VisitorInterface) {
+	visitor.VisitBinary(b)
 }
 
 type Unary struct {
@@ -21,9 +28,17 @@ type Unary struct {
 	Right    *Expression
 }
 
+func (u *Unary) Accept(visitor VisitorInterface) {
+	visitor.VisitUnary(u)
+}
+
 type Literal struct {
 	Expression
 	Value interface{}
+}
+
+func (l *Literal) Accept(visitor VisitorInterface) {
+	visitor.VisitLiteral(l)
 }
 
 type Grouping struct {
@@ -32,31 +47,31 @@ type Grouping struct {
 	Right token.Token
 }
 
-type Parser struct {
-	Tokens []token.Token
+func (g *Grouping) Accept(visitor VisitorInterface) {
+	visitor.VisitGrouping(g)
 }
 
-// invoke a Parser instance with a list of tokens
-
-// loop through the list one by one
-
-// create a new Production instance on an equality
-
-// syntax trees holds the intermmediate representation of the program between the list of tokens vs being parsed by the interpreter
-
-// => they should just be data
-
-func (p *Parser) Parse() {
-	fmt.Println("Parsing tokens")
-	for _, t := range p.Tokens {
-		if t.Type == token.EQUAL {
-			p.Evaluate(t)
-		}
-	}
+type VisitorInterface interface {
+	VisitBinary(expr *Binary)
+	VisitUnary(expr *Unary)
+	VisitLiteral(expr *Literal)
+	VisitGrouping(expr *Grouping)
 }
 
-func (p *Parser) Evaluate(t token.Token) {
+// Visitors implementations
+type Visitor struct{}
 
+func (v *Visitor) VisitBinary(expr *Binary) {
+	fmt.Println("Visiting Binary")
+}
+func (v *Visitor) VisitUnary(expr *Unary) {
+	fmt.Println("Visiting Unary")
+}
+func (v *Visitor) VisitLiteral(expr *Literal) {
+	fmt.Println("Visiting Literal")
+}
+func (v *Visitor) VisitGrouping(expr *Grouping) {
+	fmt.Println("Visiting Grouping")
 }
 
 // NOTES: In fact, these types exist to enable the parser and interpreter to communicate. That lends itself to types that are simply data with no associated behavior. This style is very natural in functional languages like Lisp and ML where all data is separate from behavior, but it feels odd in Java.
