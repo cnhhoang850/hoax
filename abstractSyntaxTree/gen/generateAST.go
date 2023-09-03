@@ -1,4 +1,4 @@
-package generateAST
+package sample
 
 import (
 	"fmt"

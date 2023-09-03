@@ -74,6 +74,8 @@ func (v *Visitor) VisitGrouping(expr *Grouping) {
 	fmt.Println("Visiting Grouping")
 }
 
+//NOTES: Visitor pattern is basically turn the wiring between the data structures (the types) from the different functions for them. When we call accept visitor, the right function will be retrieved for the right type. With class-based languages, we can do this with inheritance. But with Go, we can't do that. So we use interfaces instead. Moreoever, this means we will have to write the functions within the datastructures in the class themselves. It's easy to add a new type this way as each class are self-contained but it's hard to add a new function. So it's a trade-off. Also, if we were to write functions that span multiple types, we would have to write functions that are hard to manage as they might overlapp, making any change to functions hard to manage. On the other hand, although we have taken care of wiring which funcction to which type with itnerfaces, we will still have to deal with a lot of function wiring and maybe even repeated code. 
+
 // NOTES: In fact, these types exist to enable the parser and interpreter to communicate. That lends itself to types that are simply data with no associated behavior. This style is very natural in functional languages like Lisp and ML where all data is separate from behavior, but it feels odd in Java.
 
 //Functional programming aficionados right now are jumping up to exclaim “See! Object-oriented languages are a bad fit for an interpreter!” I won’t go that far. You’ll recall that the scanner itself was admirably suited to object-orientation. It had all of the mutable state to keep track of where it was in the source code, a well-defined set of public methods, and a handful of private helpers.

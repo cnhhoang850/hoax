@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"hoax/generateAST"
+	"hoax/abstractSyntaxTree"
 	"hoax/scanner"
 	"hoax/token"
 	"io"
@@ -35,11 +35,12 @@ func main() {
 	fmt.Println(scanner.Tokens)
 
 	//Test generateAST
-	generateAST.GenerateAST("./", "Expr", []string{
-		"Binary   : left Expr, operator Token, right Expr",
-		"Grouping : expression Expr",
-		"Literal  : value interface{}", // interface{} is a placeholder for any type
-		"Unary    : operator Token, right Expr",
+	abstractSyntaxTree.GenerateAST("./parser", "Expr", []string{
+		"Expression : Expression Expr",
+		"Binary   : Left Expr, Operator token.Token, Right Expr",
+		"Grouping : Expression Expr",
+		"Literal  : Value token.Token", // interface{} is a placeholder for any type
+		"Unary    : Operator token.Token, Right Expr",
 	})
 }
 
