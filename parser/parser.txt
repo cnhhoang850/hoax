@@ -11,6 +11,7 @@ type ExpressionInterface interface {
 }
 
 type Expression struct{}
+
 type Binary struct {
 	Expression
 	Left     *Expression

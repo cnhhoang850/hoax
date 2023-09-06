@@ -42,6 +42,8 @@ func main() {
 		"Literal  : Value token.Token", // interface{} is a placeholder for any type
 		"Unary    : Operator token.Token, Right Expr",
 	})
+
+	abstractSyntaxTree.Printer()
 }
 
 func runFile(filePath string) {

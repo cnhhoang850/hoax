@@ -16,9 +16,7 @@ func GenerateAST(path string, baseName string, types []string) {
 
 	imports := `import (
 	"fmt"
-	"hoax/token"
-)
-`
+	"hoax/token")`
 
 	basenameContent := fmt.Sprintf("package parser\n\n%s\n type %s interface {\n\tAccept(visitor VisitorInterface)\n}\n\n", imports, baseName)
 

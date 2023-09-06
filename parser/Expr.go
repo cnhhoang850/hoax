@@ -2,54 +2,49 @@ package parser
 
 import (
 	"fmt"
-	"hoax/token"
-)
-
-type Expr interface {
+	"hoax/token")
+ type Expr interface {
 	Accept(visitor VisitorInterface)
 }
 
 type Expression struct {
+	Expr Expr
 	Expression Expr
 }
 
 func (x *Expression) Accept(visitor VisitorInterface) {
 	visitor.VisitExpression(x)
 }
-
 type Binary struct {
-	Expr     Expr
-	Left     Expr
-	Operator token.Token
-	Right    Expr
+	Expr Expr
+	Left Expr
+	 Operator token.Token
+	 Right Expr
 }
 
 func (x *Binary) Accept(visitor VisitorInterface) {
 	visitor.VisitBinary(x)
 }
-
 type Grouping struct {
-	Expr       Expr
+	Expr Expr
 	Expression Expr
 }
 
 func (x *Grouping) Accept(visitor VisitorInterface) {
 	visitor.VisitGrouping(x)
 }
-
 type Literal struct {
-	Expr  Expr
+	Expr Expr
 	Value token.Token
 }
 
 func (x *Literal) Accept(visitor VisitorInterface) {
 	visitor.VisitLiteral(x)
 }
-
 type Unary struct {
-	Expr     Expr
+	Expr Expr
 	Operator token.Token
-	Right    Expr
+	 Right Expr
 }
 
 func (x *Unary) Accept(visitor VisitorInterface) {
@@ -65,6 +60,7 @@ type VisitorInterface interface {
 }
 
 type Visitor struct{}
+
 
 func (v *Visitor) VisitExpression(expr *Expression) {
 	fmt.Println("Visiting Expression")
