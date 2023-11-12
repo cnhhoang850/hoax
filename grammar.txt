@@ -8,4 +8,26 @@ grouping    -> "(" expresssion ")"
 unary       -> ("-" | "!") expression ;
 binary      -> expression operator expression ;
 operator    -> "==" | "!=" | "<" | "<=" | ">" | ">=" | "+"  | "-"  | "*" | "/" ;
-            
+
+Right now, the grammar rules originiates from expression. There's self reference in the operands, which makes it circular and does not have clear hieararchy or precedence 
+
+
+Name	Operators	Associates
+Equality	== !=	Left
+Comparison	> >= < <=	Left
+Term	- +	Left
+Factor	/ *	Left
+Unary	! -	Right
+
+
+expression -> equality
+equality   -> comparison ( ( "!=" | "==" ) comparison)* ;
+comparison -> term ( ( "<" | ">" | "<=" | ">=" ) term )* ;
+term       -> factor ( ( "+" | "-" ) factor) ;
+factor     -> unary ( ( "/" | "*" ) unary)* ;
+factor     -> factor ( "/" | "*" ) unary | unary (l)
+unary      -> ( "!" | "-") unary | primary ;
+primary    -> NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" ;
+
+First is last. Equality is last because it 'waits' for everything else to parse. Comparison is made before equality. 
+Term are addition and substraction. Factor is multiplication. Grammars are a matter of taste and also a matter of fitting with the parsing algorithms. 
